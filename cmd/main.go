@@ -1,9 +1,3 @@
 package main
 
-import (
-	"fmt"
-)
-
-func main() {
-	fmt.Println("Hello, from api gateway!");
-}
+func main() {}
