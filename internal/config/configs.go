@@ -1,19 +1,19 @@
 package config
 
 import (
-	"os"
 	"encoding/json"
-	"time"
 	"fmt"
+	"os"
+	"time"
 
 	"github.com/loomchat/api-gateway-loom-chat/pkg/log"
 )
 
 type Configs struct {
-	Port int `json:"port"`
-	Timeout time.Duration `json:"timeout"` // in milliseconds
-	RouteConfigPath string `json:"routeConfigPath"` // path to the global config file that includes all the
-													// other config files.
+	Port            int           `json:"port"`
+	Timeout         time.Duration `json:"timeout"`         // in milliseconds
+	RouteConfigPath string        `json:"routeConfigPath"` // path to the global config file that includes all the
+	// other config files.
 }
 
 func (c *Configs) String() string {
@@ -39,7 +39,7 @@ func parseConfigs(defaultConfigs *Configs) error {
 
 func GetConfigs() *Configs {
 	configs := Configs{
-		Port: 8080,
+		Port:    8080,
 		Timeout: 10 * time.Millisecond,
 	}
 	log.Debug("Default server configs: %v", &configs)

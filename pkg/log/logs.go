@@ -1,8 +1,8 @@
 package log
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 )
 
 var ctx = context.Background()

@@ -6,6 +6,9 @@ build:
 run: build
 	@./$(EXEC)
 
+format:
+	@go fmt ./...
+
 clean:
 	@rm ./$(EXEC)
 

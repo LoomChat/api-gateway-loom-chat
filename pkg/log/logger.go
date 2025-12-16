@@ -1,18 +1,18 @@
 package log
 
 import (
-	"os"
 	"log/slog"
+	"os"
 )
 
 const (
-	LevelTrace     	= slog.Level(-8)
-	LevelDebug     	= slog.LevelDebug
-	LevelInfo      	= slog.LevelInfo
-	LevelWarn   	= slog.LevelWarn
-	LevelFixMe		= slog.Level(6)
-	LevelError     	= slog.LevelError
-	LevelFatal 		= slog.Level(12)
+	LevelTrace = slog.Level(-8)
+	LevelDebug = slog.LevelDebug
+	LevelInfo  = slog.LevelInfo
+	LevelWarn  = slog.LevelWarn
+	LevelFixMe = slog.Level(6)
+	LevelError = slog.LevelError
+	LevelFatal = slog.Level(12)
 )
 
 var logger = slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
@@ -49,4 +49,4 @@ var logger = slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 
 		return a
 	},
-}));
+}))
