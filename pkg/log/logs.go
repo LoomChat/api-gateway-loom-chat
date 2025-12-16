@@ -19,6 +19,10 @@ func Warn(format string, args ...any) {
 	logger.Warn(fmt.Sprintf(format, args...))
 }
 
+func Fixme(format string, args ...any) {
+	logger.Log(ctx, LevelFixMe, fmt.Sprintf(format, args...))
+}
+
 func Error(format string, args ...any) {
 	logger.Error(fmt.Sprintf(format, args...))
 }

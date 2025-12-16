@@ -10,6 +10,7 @@ const (
 	LevelDebug     	= slog.LevelDebug
 	LevelInfo      	= slog.LevelInfo
 	LevelWarn   	= slog.LevelWarn
+	LevelFixMe		= slog.Level(6)
 	LevelError     	= slog.LevelError
 	LevelFatal 		= slog.Level(12)
 )
@@ -35,8 +36,10 @@ var logger = slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 				a.Value = slog.StringValue("DEBUG")
 			case level < LevelWarn:
 				a.Value = slog.StringValue("INFO")
-			case level < LevelError:
+			case level < LevelFixMe:
 				a.Value = slog.StringValue("WARN")
+			case level < LevelError:
+				a.Value = slog.StringValue("FIXME")
 			case level < LevelFatal:
 				a.Value = slog.StringValue("ERROR")
 			default:

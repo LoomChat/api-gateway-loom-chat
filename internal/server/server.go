@@ -2,25 +2,35 @@ package server
 
 import (
 	"net/http"
-	"time"
 	"fmt"
 
 	"github.com/loomchat/api-gateway-loom-chat/pkg/log"
+	"github.com/loomchat/api-gateway-loom-chat/internal/middleware"
+	"github.com/loomchat/api-gateway-loom-chat/internal/routing"
+	"github.com/loomchat/api-gateway-loom-chat/internal/config"
 )
 
-const (
-	Port = 8080 // TODO: GET IT FROM THE CONFIGS!!!
+var serverConfigs = config.GetConfigs()
+
+var serverHandler = middleware.PrependMiddlewareChain(
+	routing.SetUpServeMux(), 
+	middleware.RateLimitMiddleware, 
+	middleware.LogMiddleware,
+	middleware.AuthMiddleware,
 )
 
 var server = &http.Server{
-	Addr: fmt.Sprintf(":%d", Port),
-	Handler: nil, // TODO: IMPLEMENT THE HANDLER!!!
-	ReadTimeout: 10 * time.Second, // TODO: SHOULD BE TAKEN FROM THE CONFIGS AS WELL
-	WriteTimeout: 10 * time.Second,
+	Addr: fmt.Sprintf(":%d", serverConfigs.Port),
+	Handler: serverHandler,
+	ReadTimeout: serverConfigs.Timeout,
+	WriteTimeout: serverConfigs.Timeout,
 	MaxHeaderBytes: 1 << 20,
 }
 
 func Start() {
-	log.Info("Listening on port %d...", Port)
-	server.ListenAndServe()
+	log.Info("Listening on port %d...", serverConfigs.Port)
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Fatal("%s", err)
+	}
 }
