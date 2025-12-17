@@ -1,0 +1,5 @@
+{
+    "port": 9090,
+    "timeout": 10,
+    "routeConfigPath": "$route_config_path"
+}

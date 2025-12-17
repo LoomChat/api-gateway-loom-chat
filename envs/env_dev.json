@@ -1,0 +1,8 @@
+{
+    "variables": {
+        "route_config_path": "routes/routes_master.json",
+        "user_api_host": "localhost",
+        "user_api_host_port": "9091",
+        "asdfa": "garbage"
+    }
+}

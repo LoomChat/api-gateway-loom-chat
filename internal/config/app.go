@@ -9,19 +9,30 @@ import (
 	"github.com/loomchat/api-gateway-loom-chat/pkg/log"
 )
 
+const (
+	appConfigsFilename = "app.configs.json"
+)
+
+// Configs struct represents the application configurations parsed from the general application
+// configurations file.
 type Configs struct {
 	Port            int           `json:"port"`
 	Timeout         time.Duration `json:"timeout"`         // in milliseconds
-	RouteConfigPath string        `json:"routeConfigPath"` // path to the global config file that includes all the
-	// other config files.
+	RouteConfigPath string        `json:"routeConfigPath"` // path to the global config file that
+	// includes all the other config files.
 }
 
 func (c *Configs) String() string {
-	return fmt.Sprintf("{port: %d, timeout: %d, routeConfigPath: %s}", c.Port, c.Timeout, c.RouteConfigPath)
+	return fmt.Sprintf(
+		"{port: %d, timeout: %d, routeConfigPath: %s}",
+		c.Port,
+		c.Timeout,
+		c.RouteConfigPath,
+	)
 }
 
 func parseConfigs(defaultConfigs *Configs) error {
-	configBytes, err := os.ReadFile("internal/config/configs.json")
+	configBytes, err := os.ReadFile(appConfigsFilename)
 	if err != nil {
 		log.Error("Failed to read the configs.json file because: %s", err)
 		return err

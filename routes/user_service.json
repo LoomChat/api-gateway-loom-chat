@@ -1,0 +1,9 @@
+[
+    {
+        "host": "$user_api_host",
+        "port": "$user_api_host_port",
+        "endpoint": "/user/hello",
+        "backendEndpoint": "/api/v1/hello",
+        "proto": "http"
+    }
+]

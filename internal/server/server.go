@@ -10,7 +10,7 @@ import (
 	"github.com/loomchat/api-gateway-loom-chat/pkg/log"
 )
 
-var serverConfigs = config.GetConfigs()
+var appConfigs = config.GetConfigs()
 
 var serverHandler = middleware.PrependMiddlewareChain(
 	routing.SetUpServeMux(),
@@ -20,17 +20,26 @@ var serverHandler = middleware.PrependMiddlewareChain(
 )
 
 var server = &http.Server{
-	Addr:           fmt.Sprintf(":%d", serverConfigs.Port),
+	Addr:           fmt.Sprintf(":%d", appConfigs.Port),
 	Handler:        serverHandler,
-	ReadTimeout:    serverConfigs.Timeout,
-	WriteTimeout:   serverConfigs.Timeout,
+	ReadTimeout:    appConfigs.Timeout,
+	WriteTimeout:   appConfigs.Timeout,
 	MaxHeaderBytes: 1 << 20,
 }
 
-func Start() {
-	log.Info("Listening on port %d...", serverConfigs.Port)
-	err := server.ListenAndServe()
+func Start() error {
+	env := config.GetEnv()
+	log.Debug("Environment variables: %v", env.Variables)
+
+	log.Debug("Raw app configs: %s", appConfigs)
+	log.Debug("Replacing variable occurrences with their values in the app configs...")
+	err := config.ReplaceEnvVarsInConfigs(appConfigs, env.Variables)
 	if err != nil {
-		log.Fatal("%s", err)
+		log.Fatal("Failed to replace env variables occurrences with their values in the app configs")
+		return err
 	}
+	log.Debug("Processed app configs: %s", appConfigs)
+
+	log.Info("Listening on port %d...", appConfigs.Port)
+	return server.ListenAndServe()
 }
