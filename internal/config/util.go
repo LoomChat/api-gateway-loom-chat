@@ -32,19 +32,32 @@ func ReplaceEnvVarsIn(text string, envVars map[string]string) (string, error) {
 	return text, nil
 }
 
-func ReplaceEnvVarsInConfigs(configs *Configs, envVars map[string]string) error {
+func ReplaceEnvVarsInConfigs(configs any, envVars map[string]string) error {
 	configsReflVal := reflect.ValueOf(configs).Elem()
 
-	for i := 0; i < configsReflVal.NumField(); i++ {
-		field := configsReflVal.Field(i)
-		if field.Kind() == reflect.String {
-			withEnvVarsReplaced, err := ReplaceEnvVarsIn(field.String(), envVars)
-			if err != nil {
-				return err
-			}
-
-			field.SetString(withEnvVarsReplaced)
+	if configsReflVal.Kind() == reflect.String {
+		withEnvVarsReplaced, err := ReplaceEnvVarsIn(configsReflVal.String(), envVars)
+		if err != nil {
+			return err
 		}
+
+		configsReflVal.SetString(withEnvVarsReplaced)
+	}
+
+	if configsReflVal.Kind() == reflect.Struct {
+		for i := 0; i < configsReflVal.NumField(); i++ {
+			field := configsReflVal.Field(i)
+			if field.Kind() == reflect.String {
+				withEnvVarsReplaced, err := ReplaceEnvVarsIn(field.String(), envVars)
+				if err != nil {
+					return err
+				}
+
+				field.SetString(withEnvVarsReplaced)
+			}
+		}
+	} else {
+		return fmt.Errorf("Non struct type parameter is passed!")
 	}
 
 	return nil

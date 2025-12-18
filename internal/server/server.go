@@ -11,9 +11,10 @@ import (
 )
 
 var appConfigs = config.GetConfigs()
+var serveMux = routing.SetUpServeMux()
 
 var serverHandler = middleware.PrependMiddlewareChain(
-	routing.SetUpServeMux(),
+	serveMux,
 	middleware.RateLimitMiddleware,
 	middleware.LogMiddleware,
 	middleware.AuthMiddleware,
@@ -39,6 +40,9 @@ func Start() error {
 		return err
 	}
 	log.Debug("Processed app configs: %s", appConfigs)
+
+	log.Debug("Setting up the routes...")
+	routing.SetUpRouteHandlers(appConfigs, env, serveMux)
 
 	log.Info("Listening on port %d...", appConfigs.Port)
 	return server.ListenAndServe()

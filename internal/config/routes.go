@@ -32,16 +32,18 @@ type Route struct {
 	Endpoint        string `json:"endpoint"`
 	BackendEndpoint string `json:"backendEndpoint"`
 	Proto           string `json:"proto"`
+	Method          string `json:"method"`
 }
 
 func (r Route) String() string {
 	return fmt.Sprintf(
-		"{host: %s, port: %s, endpoint: %s, backendEndpoint: %s, proto: %s",
+		"{host: %s, port: %s, endpoint: %s, backendEndpoint: %s, proto: %s, method: %s}",
 		r.Host,
 		r.Port,
 		r.Endpoint,
 		r.BackendEndpoint,
 		r.Proto,
+		r.Method,
 	)
 }
 

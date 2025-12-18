@@ -4,6 +4,7 @@
         "port": "$user_api_host_port",
         "endpoint": "/user/hello",
         "backendEndpoint": "/api/v1/hello",
-        "proto": "http"
+        "proto": "http",
+        "method": "GET"
     }
 ]
